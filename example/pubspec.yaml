@@ -1,0 +1,21 @@
+name: bjpay_sdk_example
+description: Exemple d'utilisation du SDK BjPay
+publish_to: "none" # empêche la publication sur pub.dev
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  bjpay_sdk:
+    path: ../   # <-- chemin vers ton SDK local
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
