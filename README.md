@@ -1,39 +1,63 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# BjPay SDK
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+Un package Flutter pour intégrer facilement le paiement BjPay dans vos applications mobiles.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## 🚀 Fonctionnalités
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- Intégration rapide du paiement BjPay via un widget Flutter.
+- Gestion des callbacks de succès et d’échec de paiement.
+- Utilisation de WebView pour une expérience utilisateur fluide.
 
-## Features
+## 🛠️ Prérequis
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Flutter SDK `>=1.17.0`
+- Dart SDK `^3.9.2`
 
-## Getting started
+## ⚡ Installation
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Ajoutez ceci à votre fichier `pubspec.yaml` :
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  bjpay_sdk:
+    git:
+      url: https://github.com/ASIN-BJ/flutter_sdk.git
 ```
 
-## Additional information
+## 🎉 Exemple d'utilisation
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:flutter/material.dart';
+import 'package:bjpay_sdk/bjpay_sdk.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'BjPay SDK Example',
+      home: Scaffold(
+        appBar: AppBar(title: const Text("BjPay Demo")),
+        body: Center(
+          child: Bjpay(
+            totalAmount: 200,
+            apiKey: "VOTRE_API_KEY",
+            callbackUrl: "VOTRE_CALLBACK_URL",
+            onSuccess: (transactionId) {
+              debugPrint("✅ Paiement réussi : $transactionId");
+            },
+            onFailure: (transactionId) {
+              debugPrint("❌ Paiement échoué : $transactionId");
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
