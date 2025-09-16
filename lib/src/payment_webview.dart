@@ -42,30 +42,52 @@ class _PaymentWebViewState extends State<PaymentWebView> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
-          'FlutterChannel', onMessageReceived: (JavaScriptMessage message) {
-            if (message.message == "close") {
-              Navigator.of(context).pop();
+        'BjPayChannel',
+        onMessageReceived: (JavaScriptMessage message) {
+          final parts = message.message.split(":");
+          final status = parts[0];
+          final transactionId = parts.length > 1 ? parts[1] : "";
+
+          if (status == "SUCCESS") {
+            widget.onSuccess?.call(transactionId);
+          }
+
+          if (status == "FAILED") {
+            widget.onFailure?.call(transactionId);
+          }
+          Navigator.of(context).pop();
+        },
+      )
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (url) {
+            final uri = Uri.parse(url);
+            final transactionId = uri.queryParameters["transactionId"];
+            
+            if (url.contains("success") && transactionId != null) {
+              widget.onSuccess?.call(transactionId);
+              Navigator.pop(context);
+            }
+
+            if (url.contains("failed") && transactionId != null) {
+              widget.onFailure?.call(transactionId);
+              Navigator.pop(context);
             }
           },
+        ),
       )
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onPageFinished: (url) {
-          if (url.contains("success")) {
-            widget.onSuccess?.call("transaction_12345");
-            Navigator.pop(context);
-          } else if (url.contains("failure")) {
-            widget.onFailure?.call("Paiement échoué");
-            Navigator.pop(context);
-          }
-        },
-      ),
-    )
-    ..loadRequest(
-      Uri.parse(
-        "https://bjpay-staging.service-public.bj/widget?totalamount=${widget.totalAmount}&currency=${widget.currency}&description=${widget.description}&apikey=${widget.apiKey}&callbackurl=${widget.callbackUrl}&customdata=$customData&partnerid=${widget.partnerId}",
-      ),
-    );
+      ..loadRequest(
+        Uri.parse(
+          "https://bjpay-staging.service-public.bj/widget"
+          "?totalamount=${widget.totalAmount}"
+          "&currency=${widget.currency}"
+          "&description=${widget.description}"
+          "&apikey=${widget.apiKey}"
+          "&callbackurl=${widget.callbackUrl}"
+          "&customdata=$customData"
+          "&partnerid=${widget.partnerId}",
+        ),
+      );
   }
 
   @override
