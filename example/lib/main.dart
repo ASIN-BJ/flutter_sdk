@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BjPay SDK Example',
+      title: 'BjPay Test SDK',
       home: Scaffold(
-        appBar: AppBar(title: const Text("BjPay Demo")),
+        appBar: AppBar(title: const Text("BjPay Test SDK")),
         body: Center(
           child: Bjpay(
             totalAmount: 200,
