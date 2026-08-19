@@ -4,7 +4,7 @@ String buildCheckoutHtml({required double totalamount, required String token}) {
   final payload = jsonEncode({
     'totalamount': totalamount,
     'token': token,
-  }).replaceAll('<', '&lt;');
+  }).replaceAll('<', r'\u003C');
 
   return '''
 <!DOCTYPE html>

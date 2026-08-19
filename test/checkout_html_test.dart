@@ -67,8 +67,8 @@ void main() {
     final expectedPayload = jsonEncode({
       'totalamount': 25.0,
       'token': injectToken,
-    }).replaceAll('<', '&lt;');
+    }).replaceAll('<', r'\u003C');
     expect(html, contains('var payload = $expectedPayload;'));
-    expect(html, contains('&lt;/script>'));
+    expect(html, contains(r'\u003C/script>'));
   });
 }
