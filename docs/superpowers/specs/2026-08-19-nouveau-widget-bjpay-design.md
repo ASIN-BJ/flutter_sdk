@@ -87,7 +87,12 @@ par le pont JS.
 String buildCheckoutHtml({required double totalamount, required String token})
 ```
 
-- Génère la page HTML complète : le `<script>` externe vers
+- Génère la page HTML complète, en reprenant les hints de performance du
+  snippet fourni dans le `<head>` :
+  `<link rel="preconnect">`, `<link rel="dns-prefetch">` et
+  `<link rel="preload" as="script">`, tous pointant vers
+  `https://widget-bjpay.service-public.bj` (respectivement l'origine et le
+  script `bjpay.min.js`) — puis le `<script>` externe vers
   `https://widget-bjpay.service-public.bj/widget/assets/bjpay.min.js`, suivi
   d'un `<script>` inline qui appelle `Tresor.payWithJs({...})`.
 - `token` est injecté via `jsonEncode(token)` (jamais interpolé brut) : la
