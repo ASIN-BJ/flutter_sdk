@@ -1,6 +1,6 @@
 name: bjpay_sdk
 description: "A BjPay Flutter package project."
-version: 0.0.2
+version: 0.1.0
 homepage: https://github.com/ASIN-BJ/flutter_sdk
 repository: https://github.com/ASIN-BJ/flutter_sdk
 issue_tracker: https://github.com/ASIN-BJ/flutter_sdk/issues
