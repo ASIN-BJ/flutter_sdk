@@ -17,8 +17,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: Bjpay(
             totalamount: 100,
-            token:
-                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE2NjM5NTAyLCJleHAiOjE3ODcyMTU1Mzh9.VY_MTh6aFozoDJ1zudiLffvb12ds2gdNY61mOMAaEdc",
+            token: "VOTRE_TOKEN_JWT",
             onSuccess: (data) {
               debugPrint("✅ Paiement réussi : $data");
             },

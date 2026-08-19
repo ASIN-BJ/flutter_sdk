@@ -7,13 +7,16 @@ class Bjpay extends StatelessWidget {
   final void Function(Map<String, dynamic> data)? onSuccess;
   final void Function(Map<String, dynamic> data)? onFailure;
 
-  const Bjpay({
+  Bjpay({
     super.key,
     required this.totalamount,
     required this.token,
     this.onSuccess,
     this.onFailure,
-  });
+  }) : assert(
+         totalamount.isFinite && totalamount > 0,
+         'totalamount must be a finite, positive number',
+       );
 
   @override
   Widget build(BuildContext context) {

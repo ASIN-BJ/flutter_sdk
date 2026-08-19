@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'bridge_message.dart';
 import 'checkout_html.dart';
 
 class PaymentWebView extends StatefulWidget {
@@ -25,6 +24,7 @@ class PaymentWebView extends StatefulWidget {
 
 class _PaymentWebViewState extends State<PaymentWebView> {
   late final WebViewController _controller;
+  bool _completed = false;
 
   @override
   void initState() {
@@ -51,27 +51,21 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   }
 
   void _handleBridgeMessage(String rawMessage) {
-    final Object? decoded;
-    try {
-      decoded = jsonDecode(rawMessage);
-    } catch (_) {
+    if (_completed) {
       return;
     }
 
-    if (decoded is! Map<String, dynamic>) {
+    final message = parseBridgeMessage(rawMessage);
+    if (message == null) {
       return;
     }
 
-    final status = decoded['status'];
-    final rawData = decoded['data'];
-    final data = rawData is Map<String, dynamic> ? rawData : <String, dynamic>{};
+    _completed = true;
 
-    if (status == 'SUCCESS') {
-      widget.onSuccess?.call(data);
-    } else if (status == 'FAILED') {
-      widget.onFailure?.call(data);
+    if (message.status == 'SUCCESS') {
+      widget.onSuccess?.call(message.data);
     } else {
-      return;
+      widget.onFailure?.call(message.data);
     }
 
     if (mounted) {

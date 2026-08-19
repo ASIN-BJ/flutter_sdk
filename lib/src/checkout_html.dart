@@ -18,7 +18,7 @@ String buildCheckoutHtml({required double totalamount, required String token}) {
     <title>BjPay Checkout</title>
   </head>
   <body>
-    <script src="https://widget-bjpay.service-public.bj/widget/assets/bjpay.min.js"></script>
+    <script src="https://widget-bjpay.service-public.bj/widget/assets/bjpay.min.js" crossorigin></script>
     <script>
       var payload = $payload;
       payload.onSuccess = function (data) {
@@ -27,7 +27,14 @@ String buildCheckoutHtml({required double totalamount, required String token}) {
       payload.onFailure = function (data) {
         BjPayChannel.postMessage(JSON.stringify({status: "FAILED", data: data}));
       };
-      Tresor.payWithJs(payload);
+      try {
+        if (typeof Tresor === 'undefined') {
+          throw new Error('bjpay.min.js unavailable');
+        }
+        Tresor.payWithJs(payload);
+      } catch (e) {
+        BjPayChannel.postMessage(JSON.stringify({status: "FAILED", data: {error: String(e)}}));
+      }
     </script>
   </body>
 </html>

@@ -49,7 +49,7 @@ void main() {
     expect(
       html,
       contains(
-        '<script src="https://widget-bjpay.service-public.bj/widget/assets/bjpay.min.js"></script>',
+        '<script src="https://widget-bjpay.service-public.bj/widget/assets/bjpay.min.js" crossorigin></script>',
       ),
     );
     expect(html, contains('Tresor.payWithJs(payload);'));
