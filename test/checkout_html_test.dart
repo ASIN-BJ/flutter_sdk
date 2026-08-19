@@ -54,4 +54,21 @@ void main() {
     );
     expect(html, contains('Tresor.payWithJs(payload);'));
   });
+
+  test('escapes tokens containing </script> to prevent script injection', () {
+    const injectToken = 'token</script><script>alert("xss")</script>';
+    final html = buildCheckoutHtml(totalamount: 25.0, token: injectToken);
+
+    // The literal </script> must NOT appear in the HTML output
+    // (which would break out of the script tag)
+    expect(html, isNot(contains('</script><script>')));
+
+    // The escaped form must appear in the payload
+    final expectedPayload = jsonEncode({
+      'totalamount': 25.0,
+      'token': injectToken,
+    }).replaceAll('<', '&lt;');
+    expect(html, contains('var payload = $expectedPayload;'));
+    expect(html, contains('&lt;/script>'));
+  });
 }
