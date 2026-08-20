@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bjpay_sdk/src/checkout_html.dart';
+import 'package:bjpay/src/checkout_html.dart';
 
 void main() {
   test('embeds totalamount and token as a JS/JSON object literal', () {

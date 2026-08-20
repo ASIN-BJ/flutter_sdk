@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  bjpay_sdk:
+  bjpay:
     path: ../   # <-- chemin vers ton SDK local
 
 dev_dependencies:

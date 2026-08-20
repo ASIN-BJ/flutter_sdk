@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bjpay_sdk/src/bridge_message.dart';
+import 'package:bjpay/src/bridge_message.dart';
 
 void main() {
   test('parses a valid SUCCESS message', () {
