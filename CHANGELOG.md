@@ -1,3 +1,7 @@
+## 0.1.1
+
+* TODO: Describe changes since 0.1.0.
+
 ## 0.1.0
 
 * Breaking change: migration vers le nouveau widget BjPay (`Tresor.payWithJs`).
