@@ -40,6 +40,14 @@ void main() {
     expect(message, isNull);
   });
 
+  test('parses a valid CLOSED message', () {
+    final message = parseBridgeMessage('{"status":"CLOSED","data":{}}');
+
+    expect(message, isNotNull);
+    expect(message!.status, 'CLOSED');
+    expect(message.data, isEmpty);
+  });
+
   test('preserves a non-map data value under a "value" key', () {
     final message = parseBridgeMessage(
       '{"status":"SUCCESS","data":"txn-123"}',

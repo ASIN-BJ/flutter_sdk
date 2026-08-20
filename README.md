@@ -28,7 +28,7 @@ dependencies:
 
 Le `token` est un JWT que votre backend doit générer via votre propre intégration BjPay ; le SDK ne le génère pas lui-même.
 
-Si l'utilisateur ferme manuellement la WebView avant d'avoir terminé le paiement, ni `onSuccess` ni `onFailure` ne sont appelés.
+Si l'utilisateur ferme le widget (bouton fermer, clic hors modale) avant d'avoir terminé le paiement, ni `onSuccess` ni `onFailure` ne sont appelés, mais l'application reprend la main automatiquement.
 
 ```dart
 import 'package:flutter/material.dart';

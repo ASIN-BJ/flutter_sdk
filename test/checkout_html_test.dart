@@ -55,6 +55,20 @@ void main() {
     expect(html, contains('Tresor.payWithJs(payload);'));
   });
 
+  test('forwards the widget close event to the Flutter bridge', () {
+    final html = buildCheckoutHtml(totalamount: 10, token: 't');
+
+    expect(
+      html,
+      contains("event.origin === 'https://widget-bjpay.service-public.bj'"),
+    );
+    expect(html, contains("event.data.bjpay === 'close'"));
+    expect(
+      html,
+      contains('BjPayChannel.postMessage(JSON.stringify({status: "CLOSED", data: {}}));'),
+    );
+  });
+
   test('escapes tokens containing </script> to prevent script injection', () {
     const injectToken = 'token</script><script>alert("xss")</script>';
     final html = buildCheckoutHtml(totalamount: 25.0, token: injectToken);

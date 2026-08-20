@@ -27,6 +27,16 @@ String buildCheckoutHtml({required double totalamount, required String token}) {
       payload.onFailure = function (data) {
         BjPayChannel.postMessage(JSON.stringify({status: "FAILED", data: data}));
       };
+      window.addEventListener('message', function (event) {
+        if (
+          event.origin === 'https://widget-bjpay.service-public.bj' &&
+          event.data &&
+          typeof event.data === 'object' &&
+          event.data.bjpay === 'close'
+        ) {
+          BjPayChannel.postMessage(JSON.stringify({status: "CLOSED", data: {}}));
+        }
+      });
       try {
         if (typeof Tresor === 'undefined') {
           throw new Error('bjpay.min.js unavailable');

@@ -25,6 +25,7 @@ class PaymentWebView extends StatefulWidget {
 class _PaymentWebViewState extends State<PaymentWebView> {
   late final WebViewController _controller;
   bool _completed = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -39,6 +40,11 @@ class _PaymentWebViewState extends State<PaymentWebView> {
       )
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageFinished: (String url) {
+            if (mounted) {
+              setState(() => _isLoading = false);
+            }
+          },
           onWebResourceError: (WebResourceError error) {
             debugPrint('BjPay widget failed to load: ${error.description}');
           },
@@ -64,7 +70,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
     if (message.status == 'SUCCESS') {
       widget.onSuccess?.call(message.data);
-    } else {
+    } else if (message.status == 'FAILED') {
       widget.onFailure?.call(message.data);
     }
 
@@ -76,8 +82,18 @@ class _PaymentWebViewState extends State<PaymentWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Paiement BjPay")),
-      body: WebViewWidget(controller: _controller),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_isLoading)
+              const ColoredBox(
+                color: Colors.white,
+                child: Center(child: CircularProgressIndicator()),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -20,7 +20,7 @@ BridgeMessage? parseBridgeMessage(String rawMessage) {
   }
 
   final status = decoded['status'];
-  if (status != 'SUCCESS' && status != 'FAILED') {
+  if (status != 'SUCCESS' && status != 'FAILED' && status != 'CLOSED') {
     return null;
   }
 
