@@ -1,6 +1,6 @@
 name: bjpay
-description: "A BjPay Flutter package project."
-version: 0.2.0
+description: "A Flutter widget for accepting BjPay payments via a token-based checkout, backed by a WebView and simple success/failure callbacks."
+version: 0.2.1
 homepage: https://github.com/ASIN-BJ/flutter_sdk
 repository: https://github.com/ASIN-BJ/flutter_sdk
 issue_tracker: https://github.com/ASIN-BJ/flutter_sdk/issues
