@@ -22,6 +22,7 @@ dependencies:
   bjpay_sdk:
     git:
       url: https://github.com/ASIN-BJ/flutter_sdk.git
+      ref: v0.1.1
 ```
 
 ## 🎉 Exemple d'utilisation
