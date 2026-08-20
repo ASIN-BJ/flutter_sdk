@@ -1,31 +1,22 @@
 import 'package:flutter/material.dart';
 import 'payment_webview.dart';
 
-
-
 class Bjpay extends StatelessWidget {
-  final double totalAmount;
-  final String apiKey;
-  final String callbackUrl;
-  final String currency;
-  final String description;
-  final Map<String, String>? customData;
-  final String partnerId;
-  final Function(String transactionId)? onSuccess;
-  final Function(String transactionId)? onFailure;
+  final double totalamount;
+  final String token;
+  final void Function(Map<String, dynamic> data)? onSuccess;
+  final void Function(Map<String, dynamic> data)? onFailure;
 
-  const Bjpay({
+  Bjpay({
     super.key,
-    required this.totalAmount,
-    required this.apiKey,
-    required this.callbackUrl,
-    this.currency = "XOF",
-    this.description = "",
-    this.customData,
-    this.partnerId = "",
+    required this.totalamount,
+    required this.token,
     this.onSuccess,
     this.onFailure,
-  });
+  }) : assert(
+         totalamount.isFinite && totalamount > 0,
+         'totalamount must be a finite, positive number',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +30,8 @@ class Bjpay extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => PaymentWebView(
-              totalAmount: totalAmount,
-              apiKey: apiKey,
-              callbackUrl: callbackUrl,
-              currency: currency,
-              description: description,
-              customData: customData,
-              partnerId: partnerId,
+              totalamount: totalamount,
+              token: token,
               onSuccess: onSuccess,
               onFailure: onFailure,
             ),

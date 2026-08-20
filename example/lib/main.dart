@@ -16,14 +16,13 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text("BjPay Test SDK")),
         body: Center(
           child: Bjpay(
-            totalAmount: 200,
-            apiKey: "810b7168-ab08-4707-8e41-fbf1d8772388",
-            callbackUrl: "https://webhook.site/ad4dfc5c-cc76-4192-8241-3599491e7242",
-            onSuccess: (transactionId) {
-              debugPrint("✅ Paiement réussi : $transactionId");
+            totalamount: 100,
+            token: "VOTRE_TOKEN_JWT",
+            onSuccess: (data) {
+              debugPrint("✅ Paiement réussi : $data");
             },
-            onFailure: (transactionId) {
-              debugPrint("❌ Paiement échoué : $transactionId");
+            onFailure: (data) {
+              debugPrint("❌ Paiement échoué : $data");
             },
           ),
         ),

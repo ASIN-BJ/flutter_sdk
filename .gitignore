@@ -29,3 +29,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+
+# Git worktrees used for isolated feature work
+.worktrees/

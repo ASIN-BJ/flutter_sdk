@@ -1,27 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:convert';
+
+import 'bridge_message.dart';
+import 'checkout_html.dart';
 
 class PaymentWebView extends StatefulWidget {
-  final double totalAmount;
-  final String apiKey;
-  final String callbackUrl;
-  final String currency;
-  final String description;
-  final Map<String, String>? customData;
-  final String partnerId;
-  final Function(String transactionId)? onSuccess;
-  final Function(String error)? onFailure;
+  final double totalamount;
+  final String token;
+  final void Function(Map<String, dynamic> data)? onSuccess;
+  final void Function(Map<String, dynamic> data)? onFailure;
 
   const PaymentWebView({
     super.key,
-    required this.totalAmount,
-    required this.apiKey,
-    required this.callbackUrl,
-    this.currency = "XOF",
-    this.description = "",
-    this.customData,
-    this.partnerId = "",
+    required this.totalamount,
+    required this.token,
     this.onSuccess,
     this.onFailure,
   });
@@ -32,69 +24,76 @@ class PaymentWebView extends StatefulWidget {
 
 class _PaymentWebViewState extends State<PaymentWebView> {
   late final WebViewController _controller;
+  bool _completed = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    String customData = widget.customData != null
-        ? jsonEncode(widget.customData)
-        : "";
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
         'BjPayChannel',
         onMessageReceived: (JavaScriptMessage message) {
-          final parts = message.message.split(":");
-          final status = parts[0];
-          final transactionId = parts.length > 1 ? parts[1] : "";
-
-          if (status == "SUCCESS") {
-            widget.onSuccess?.call(transactionId);
-          }
-
-          if (status == "FAILED") {
-            widget.onFailure?.call(transactionId);
-          }
-          Navigator.of(context).pop();
+          _handleBridgeMessage(message.message);
         },
       )
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageFinished: (url) {
-            final uri = Uri.parse(url);
-            final transactionId = uri.queryParameters["transactionId"];
-            
-            if (url.contains("success") && transactionId != null) {
-              widget.onSuccess?.call(transactionId);
-              Navigator.pop(context);
+          onPageFinished: (String url) {
+            if (mounted) {
+              setState(() => _isLoading = false);
             }
-
-            if (url.contains("failed") && transactionId != null) {
-              widget.onFailure?.call(transactionId);
-              Navigator.pop(context);
-            }
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('BjPay widget failed to load: ${error.description}');
           },
         ),
       )
-      ..loadRequest(
-        Uri.parse(
-          "https://bjpay-staging.service-public.bj/widget"
-          "?totalamount=${widget.totalAmount}"
-          "&currency=${widget.currency}"
-          "&description=${widget.description}"
-          "&apikey=${widget.apiKey}"
-          "&callbackurl=${widget.callbackUrl}"
-          "&customdata=$customData"
-          "&partnerid=${widget.partnerId}",
-        ),
+      ..loadHtmlString(
+        buildCheckoutHtml(totalamount: widget.totalamount, token: widget.token),
+        baseUrl: 'https://widget-bjpay.service-public.bj',
       );
+  }
+
+  void _handleBridgeMessage(String rawMessage) {
+    if (_completed) {
+      return;
+    }
+
+    final message = parseBridgeMessage(rawMessage);
+    if (message == null) {
+      return;
+    }
+
+    _completed = true;
+
+    if (message.status == 'SUCCESS') {
+      widget.onSuccess?.call(message.data);
+    } else if (message.status == 'FAILED') {
+      widget.onFailure?.call(message.data);
+    }
+
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Paiement BjPay")),
-      body: WebViewWidget(controller: _controller),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (_isLoading)
+              const ColoredBox(
+                color: Colors.white,
+                child: Center(child: CircularProgressIndicator()),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

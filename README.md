@@ -26,6 +26,10 @@ dependencies:
 
 ## 🎉 Exemple d'utilisation
 
+Le `token` est un JWT que votre backend doit générer via votre propre intégration BjPay ; le SDK ne le génère pas lui-même.
+
+Si l'utilisateur ferme le widget (bouton fermer, clic hors modale) avant d'avoir terminé le paiement, ni `onSuccess` ni `onFailure` ne sont appelés, mais l'application reprend la main automatiquement.
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:bjpay_sdk/bjpay_sdk.dart';
@@ -45,14 +49,13 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text("BjPay Demo")),
         body: Center(
           child: Bjpay(
-            totalAmount: 200,
-            apiKey: "VOTRE_API_KEY",
-            callbackUrl: "VOTRE_CALLBACK_URL",
-            onSuccess: (transactionId) {
-              debugPrint("✅ Paiement réussi : $transactionId");
+            totalamount: 200,
+            token: "VOTRE_TOKEN_JWT",
+            onSuccess: (data) {
+              debugPrint("✅ Paiement réussi : $data");
             },
-            onFailure: (transactionId) {
-              debugPrint("❌ Paiement échoué : $transactionId");
+            onFailure: (data) {
+              debugPrint("❌ Paiement échoué : $data");
             },
           ),
         ),
