@@ -1,3 +1,7 @@
+## 0.1.1
+
+* Retrait de fichiers commités par erreur (rapport de build Android, documents internes de planification) et mise à jour du `.gitignore` en conséquence.
+
 ## 0.1.0
 
 * Breaking change: migration vers le nouveau widget BjPay (`Tresor.payWithJs`).
