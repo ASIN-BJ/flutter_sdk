@@ -1,6 +1,6 @@
 ## 0.1.1
 
-* TODO: Describe changes since 0.1.0.
+* Retrait de fichiers commités par erreur (rapport de build Android, documents internes de planification) et mise à jour du `.gitignore` en conséquence.
 
 ## 0.1.0
 
