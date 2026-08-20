@@ -1,3 +1,8 @@
+## 0.2.1
+
+* Documentation dartdoc ajoutée sur l'API publique (`Bjpay` et ses paramètres).
+* Description du package étoffée dans `pubspec.yaml`.
+
 ## 0.2.0
 
 * Breaking change: le package est renommé `bjpay` (au lieu de `bjpay_sdk`). Mettez à jour votre dépendance et vos imports (`package:bjpay/bjpay.dart`).
