@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bjpay_sdk/bjpay_sdk.dart';
+import 'package:bjpay/bjpay.dart';
 
 void main() {
   runApp(const MyApp());

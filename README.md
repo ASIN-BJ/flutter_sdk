@@ -1,4 +1,4 @@
-# BjPay SDK
+# BjPay
 
 Un package Flutter pour intégrer facilement le paiement BjPay dans vos applications mobiles.
 
@@ -19,10 +19,9 @@ Ajoutez ceci à votre fichier `pubspec.yaml` :
 
 ```yaml
 dependencies:
-  bjpay_sdk:
+  bjpay:
     git:
       url: https://github.com/ASIN-BJ/flutter_sdk.git
-      ref: v0.1.1
 ```
 
 ## 🎉 Exemple d'utilisation
@@ -33,7 +32,7 @@ Si l'utilisateur ferme le widget (bouton fermer, clic hors modale) avant d'avoir
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:bjpay_sdk/bjpay_sdk.dart';
+import 'package:bjpay/bjpay.dart';
 
 void main() {
   runApp(const MyApp());

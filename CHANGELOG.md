@@ -1,3 +1,7 @@
+## 0.2.0
+
+* Breaking change: le package est renommé `bjpay` (au lieu de `bjpay_sdk`). Mettez à jour votre dépendance et vos imports (`package:bjpay/bjpay.dart`).
+
 ## 0.1.1
 
 * Retrait de fichiers commités par erreur (rapport de build Android, documents internes de planification) et mise à jour du `.gitignore` en conséquence.
